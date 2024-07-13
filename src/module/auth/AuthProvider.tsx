@@ -1,7 +1,6 @@
 'use client';
 
-import React from 'react';
-
+import { auth as firebaseAuth } from '../../shared/firebase/firebase-setup';
 import { useQueryClient } from '@tanstack/react-query';
 import {
   signOut as firebaseSignOut,
@@ -10,8 +9,7 @@ import {
   User,
 } from 'firebase/auth';
 import { usePathname, useRouter } from 'next/navigation';
-
-import { auth as firebaseAuth } from '../../shared/firebase/firebase-setup';
+import React from 'react';
 
 export interface AuthClaims {
   companyId?: string;
@@ -49,12 +47,12 @@ export default function AuthProvider({
     const unsubscribe = onAuthStateChanged(firebaseAuth, async (user) => {
       let hasNoClaims = true;
       if (user) {
-        let _claims: AuthClaims | undefined = undefined;
+        // let _claims: AuthClaims | undefined = undefined;
         try {
           const { claims } = await user.getIdTokenResult();
           hasNoClaims = false;
           //@ts-ignore
-          _claims = claims;
+          // _claims = claims;
           // window.electron.store.set(
           //   'companyId',
           //   (claims?.companyId as string | undefined) ?? ''
@@ -91,7 +89,7 @@ export default function AuthProvider({
 
   const signin: AuthContextType['signin'] = async (params) => {
     try {
-      const user = await signInWithEmailAndPassword(
+      await signInWithEmailAndPassword(
         firebaseAuth,
         params.email,
         params.password
