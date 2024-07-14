@@ -5,16 +5,15 @@ on:
     branches:
       - main
 
-permissions:
-  contents: write
-  pull-requests: write
-  security-events: write
-
 jobs:
   pr-draft-release:
     runs-on: ubuntu-latest
-    outputs:
-      version: ${{ steps.save_version.outputs.version }}
+    permissions:
+      contents: read
+      pull-requests: write
+      checks: write
+    # outputs:
+    #   version: ${{ steps.save_version.outputs.version }}
     steps:
       - uses: actions/checkout@v4
         with:
