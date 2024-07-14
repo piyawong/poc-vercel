@@ -5,9 +5,9 @@ on:
     branches:
       - main
 
-permissions:
-  contents: write
-  pull-requests: write
+# permissions:
+#   contents: write
+#   pull-requests: write
 
 jobs:
   pr-draft-release:
@@ -56,12 +56,12 @@ jobs:
       - name: Debug the application
         run: ls
 
-      - uses: FirebaseExtended/action-hosting-deploy@v0
+      - uses: FirebaseExtended/action-hosting-deploy@v0.9.0
         with:
           firebaseServiceAccount: "${{ secrets.GCP_SA_KEY }}"
           projectId: scrappy-prod
           channelId: ${{steps.save_version.outputs.pr_number}}
-          repoToken: "${{secrets.GITHUB_TOKEN}}"
+          repoToken: "${{ secrets.GITHUB_TOKEN }}"
 
       # - name: Deploy to Firebase Hosting
       #   uses: w9jds/firebase-action@v13.7.2
