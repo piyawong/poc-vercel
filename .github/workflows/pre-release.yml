@@ -28,11 +28,10 @@ jobs:
             echo "changes=true" >> $GITHUB_ENV
           else
             echo "changes=false" >> $GITHUB_ENV
-            echo "No changes in the web folder. Stopping the workflow."
-            exit 1
           fi
 
       - name: Get the PR number
+        if: env.changes == 'true'
         uses: actions/github-script@v7
         id: get_pr_data
         with:
@@ -44,29 +43,26 @@ jobs:
             return pr;
 
       - name: Save version from PR number
+        if: env.changes == 'true'
         id: save_version
         run: |
           echo "version=0.0.0-PR.${{ fromJson(steps.get_pr_data.outputs.result).number }}" >> "$GITHUB_OUTPUT"
           echo "pr_number=PR-${{ fromJson(steps.get_pr_data.outputs.result).number }}" >> "$GITHUB_OUTPUT"
 
       - name: Replace version in package.json
+        if: env.changes == 'true'
         run: echo "`jq '.version="${{ steps.save_version.outputs.version }}"' ./package.json`" > ./package.json
 
-      - run: echo "PACKAGE_JSON=$(jq -c . < ./package.json)" >> $GITHUB_ENV
-      - run: echo '${{ fromJson(env.PACKAGE_JSON).version }}'
-
-      - name: Debug package.json
-        run: cat ./package.json
-
       - name: Install the dependencies
+        if: env.changes == 'true'
         run: yarn install --frozen-lockfile --network-timeout 500000
 
       - name: Build the application
+        if: env.changes == 'true'
         run: yarn build
-      - name: Debug the application
-        run: ls
 
       - uses: FirebaseExtended/action-hosting-deploy@v0.9.0
+        if: env.changes == 'true'
         with:
           firebaseServiceAccount: "${{ secrets.GCP_SA_KEY }}"
           projectId: scrappy-prod
