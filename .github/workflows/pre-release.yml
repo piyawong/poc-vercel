@@ -37,7 +37,7 @@ jobs:
         id: save_version
         run: |
           echo "version=0.0.0-PR.${{ fromJson(steps.get_pr_data.outputs.result).number }}" >> "$GITHUB_OUTPUT"
-          echo "pr_number=${{ fromJson(steps.get_pr_data.outputs.result).number }}" >> "$GITHUB_OUTPUT"
+          echo "pr_number=PR-${{ fromJson(steps.get_pr_data.outputs.result).number }}" >> "$GITHUB_OUTPUT"
 
       - name: Replace version in package.json
         run: echo "`jq '.version="${{ steps.save_version.outputs.version }}"' ./package.json`" > ./package.json
@@ -68,12 +68,11 @@ jobs:
         run: echo "URL=https://<YOUR_FIREBASE_PROJECT_ID>.web.app" >> $GITHUB_ENV
 
       - name: Add comment to PR with Firebase Hosting URL
-        uses: actions/github-script@v6
+        uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const url = process.env.URL;
-            const context = github.context;
             github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
