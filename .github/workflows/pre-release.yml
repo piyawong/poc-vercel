@@ -54,7 +54,7 @@ jobs:
         run: ls
 
       - name: Deploy to Firebase Hosting
-        uses: w9jds/firebase-action@v1.6.0
+        uses: w9jds/firebase-action@v13.7.2
         with:
           args: deploy --only hosting
         env:
