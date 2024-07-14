@@ -21,13 +21,9 @@ export default function App({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  console.log("packageJson = ", packageJson);
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <div> App version is {packageJson.version}</div>
-        {children}
-      </AuthProvider>
+      <AuthProvider>{children}</AuthProvider>
     </QueryClientProvider>
   );
 }

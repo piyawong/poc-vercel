@@ -46,6 +46,13 @@
     "firestore-algolia-search": "algolia/firestore-algolia-search@1.2.4"
   },
   "hosting": {
-    "public": "public"
+    "public": "out",
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
   }
 }
