@@ -37,6 +37,7 @@ jobs:
         id: save_version
         run: |
           echo "version=0.0.0-PR.${{ fromJson(steps.get_pr_data.outputs.result).number }}" >> "$GITHUB_OUTPUT"
+          echo "pr_number=${{ fromJson(steps.get_pr_data.outputs.result).number }}" >> "$GITHUB_OUTPUT"
 
       - name: Replace version in package.json
         run: echo "`jq '.version="${{ steps.save_version.outputs.version }}"' ./package.json`" > ./package.json
@@ -58,6 +59,6 @@ jobs:
       - name: Deploy to Firebase Hosting
         uses: w9jds/firebase-action@v13.7.2
         with:
-          args: hosting:channel:deploy ${{ steps.save_version.outputs.version }} --expires 7d
+          args: hosting:channel:deploy ${{ steps.save_version.outputs.pr_number }} --expires 7d
         env:
           GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
