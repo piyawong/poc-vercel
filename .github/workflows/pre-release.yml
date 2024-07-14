@@ -22,7 +22,8 @@ jobs:
         with:
           node-version: 20
 
-      - uses: actions/github-script@v7
+      - name: Get the PR number
+        uses: actions/github-script@v7
         id: get_pr_data
         with:
           script: |
@@ -39,7 +40,10 @@ jobs:
           echo "version=0.0.0-PR.${{ fromJson(steps.get_pr_data.outputs.result).number }}" >> "$GITHUB_OUTPUT"
 
       - name: Replace version in package.json
-        run: echo "`jq '.version="${{ steps.save_version.outputs.version }}"' release/app/package.json`" > release/app/package.json
+        run: echo "`jq '.version="${{ steps.save_version.outputs.version }}"' ./package.json`" > ./package.json
 
       - run: echo "PACKAGE_JSON=$(jq -c . < release/app/package.json)" >> $GITHUB_ENV
       - run: echo '${{ fromJson(env.PACKAGE_JSON).version }}'
+
+      - name: Debug package.kspm
+        run: echo ./package.json
