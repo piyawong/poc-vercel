@@ -42,8 +42,8 @@ jobs:
       - name: Replace version in package.json
         run: echo "`jq '.version="${{ steps.save_version.outputs.version }}"' ./package.json`" > ./package.json
 
-      - run: echo "PACKAGE_JSON=$(jq -c . < release/app/package.json)" >> $GITHUB_ENV
+      - run: echo "PACKAGE_JSON=$(jq -c . < ./package.json)" >> $GITHUB_ENV
       - run: echo '${{ fromJson(env.PACKAGE_JSON).version }}'
 
       - name: Debug package.kspm
-        run: echo ./package.json
+        run: cat ./package.json
