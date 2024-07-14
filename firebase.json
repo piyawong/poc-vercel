@@ -44,5 +44,8 @@
   ],
   "extensions": {
     "firestore-algolia-search": "algolia/firestore-algolia-search@1.2.4"
+  },
+  "hosting": {
+    "public": "public"
   }
 }
