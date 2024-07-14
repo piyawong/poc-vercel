@@ -1,6 +1,9 @@
 name: PR-Release
 
-on: workflow_dispatch
+on:
+  pull_request:
+    branches:
+      - main
 
 permissions:
   contents: write
