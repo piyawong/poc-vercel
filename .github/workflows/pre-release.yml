@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - "web/**"
+      - "shared/**"
 
 jobs:
   pr-draft-release:
@@ -42,6 +43,8 @@ jobs:
 
       - name: Replace version in package.json
         run: echo "`jq '.version="${{ steps.save_version.outputs.version }}"' ./package.json`" > ./package.json
+
+      - run: echo "`jq '.version="${{ steps.save_version.outputs.version }}"' ./web/package.json`" > ./web/package.json
 
       - name: Install the dependencies
         run: yarn install --frozen-lockfile --network-timeout 500000
