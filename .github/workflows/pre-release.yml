@@ -26,19 +26,12 @@ jobs:
         id: get_pr_data
         with:
           script: |
-            console.log('context = ',context)
-            const result = (
-              await github.rest.repos.listPullRequestsAssociatedWithCommit({
-                commit_sha: context.sha,
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-              })
-            );
-            console.log(result);
-            if (!result.data.length) {
-              throw new Error('No PR found for the commit');
+            const pr = context.payload.pull_request;
+            if (!pr) {
+              throw new Error('No pull request found');
             }
-            return result.data[0];
+            console.log(pr);
+            return pr;
 
       - name: Save version from PR number
         id: save_version
