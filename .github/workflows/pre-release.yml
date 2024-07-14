@@ -26,6 +26,7 @@ jobs:
         id: get_pr_data
         with:
           script: |
+            console.log('context = ',context)
             const result = (
               await github.rest.repos.listPullRequestsAssociatedWithCommit({
                 commit_sha: context.sha,

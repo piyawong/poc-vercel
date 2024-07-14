@@ -1,7 +1,12 @@
-'use client';
+"use client";
 
-import AuthProvider from '../module/auth/AuthProvider';
-import { QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import AuthProvider from "../module/auth/AuthProvider";
+import {
+  QueryCache,
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
+import packageJson from "../../package.json";
 
 const queryClient = new QueryClient({
   queryCache: new QueryCache({
@@ -12,13 +17,16 @@ const queryClient = new QueryClient({
 });
 
 export default function App({
-    children,
-  }: Readonly<{
-    children: React.ReactNode;
-  }>) {
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
     <QueryClientProvider client={queryClient}>
-        <AuthProvider>{children}</AuthProvider>
+      <AuthProvider>
+        <div> App version is {packageJson.version}</div>
+        {children}
+      </AuthProvider>
     </QueryClientProvider>
   );
 }
