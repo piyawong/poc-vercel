@@ -48,6 +48,9 @@ jobs:
       - name: Debug package.json
         run: cat ./package.json
 
+      - name: Install the dependencies
+        run: yarn install --frozen-lockfile --network-timeout 500000
+
       - name: Build the application
         run: yarn build
       - name: Debug the application
