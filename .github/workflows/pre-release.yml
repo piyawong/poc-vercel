@@ -45,5 +45,17 @@ jobs:
       - run: echo "PACKAGE_JSON=$(jq -c . < ./package.json)" >> $GITHUB_ENV
       - run: echo '${{ fromJson(env.PACKAGE_JSON).version }}'
 
-      - name: Debug package.kspm
+      - name: Debug package.json
         run: cat ./package.json
+
+      - name: Build the application
+        run: yarn build
+      - name: Debug the application
+        run: ls
+
+      - name: Deploy to Firebase Hosting
+        uses: w9jds/firebase-action@v1.6.0
+        with:
+          args: deploy --only hosting
+        env:
+          FIREBASE_TOKEN: ${{ secrets.GCP_SA_KEY }}
